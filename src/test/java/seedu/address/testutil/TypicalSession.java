@@ -17,7 +17,7 @@ import seedu.address.model.user.CardSrsData;
  */
 public class TypicalSession {
     public static final SrsCard SRS_CARD_JAPAN = new SrsCard(CARD_JAPAN, new CardSrsData(CARD_JAPAN.hashCode(), 1,
-        1, Instant.now().plus(Duration.ofHours(2))), LESSON_DEFAULT);
+        1, Instant.now().plus(Duration.ofHours(2)), false), LESSON_DEFAULT);
 
     public static final Session SESSION_DEFAULT = new SessionBuilder().build();
     public static final Session SESSION_DEFAULT_2 = new SessionBuilder()

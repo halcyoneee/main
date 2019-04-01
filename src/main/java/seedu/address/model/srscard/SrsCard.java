@@ -3,6 +3,7 @@ package seedu.address.model.srscard;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.time.Instant;
+import java.util.List;
 
 import seedu.address.model.card.Card;
 import seedu.address.model.lesson.Lesson;
@@ -57,6 +58,15 @@ public class SrsCard {
 
     public int getStreak() {
         return cardData.getStreak();
+    }
+    public List<String> getHints() {
+        return card.getOptionals();
+    }
+    public String getQuestionHeader() {
+        return lesson.getCoreHeaders().get((lesson.getQuestionCoreIndex()));
+    }
+    public String getAnswerHeader() {
+        return lesson.getCoreHeaders().get((lesson.getAnswerCoreIndex()));
     }
 
     public Lesson getLesson() {

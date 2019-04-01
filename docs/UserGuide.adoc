@@ -80,18 +80,25 @@ Format: `start n/NAME [c/COUNT] m/MODE`
 
 Usage rules:
 
-* You can optionally specify the `COUNT` parameter. `COUNT` sets the number of cards to be tested in the quiz session. If no `COUNT` is specified, by default 10 cards are tested.
-* You must specify `MODE`. `MODE` sets the testing mode of the quiz session. The three available modes are `LEARN`, `PREVIEW` and `REVIEW`.
+* You can optionally specify the `COUNT` parameter. `COUNT` sets the number of cards to be tested in the quiz session. If no `COUNT` is specified, by default 1 card is tested.
+* The name field is used to choose lesson.
+* You must specify `MODE`. `MODE` sets the testing mode of the quiz session. The three available modes are `LEARN`, `PREVIEW`, `REVIEW` and `DIFFICULT`.
+. PREVIEW: sees both question and answer in file order but not tested.
+. DIFFICULT: sees cards labelled as difficult with both question and answer but not tested.
+. REVIEW: only get tested, based on the srs value of each card.
+. LEARN: sees new cards with both the question and answer first then get tested.
 
 [NOTE]
 ====
 Flashcards are tested based on the link:https://en.wikipedia.org/wiki/Spaced_repetition[Space-Repetition technique].
 ====
+Format: `start n/NAME [c/COUNT] m/MODE`
 
 Examples:
 
-* `start n/Capitals of the world m/LEARN`
-* `start n/Operating System c/20 m/PREVIEW`
+* `start n/country-capitals m/LEARN`
+* `start n/country-capitals-asia c/20 m/PREVIEW`
+
 
 [[listLessons]]
 ==== Listing all lessons: `listLessons`
@@ -333,6 +340,21 @@ If the file is saved without UTF-8 encoding, the data may have already been save
 == Command Summary
 
 === Management Mode
+<<<<<<< HEAD
+* *View help*: `help`
+* *Start a quiz session*: `start n/NAME [c/COUNT] m/MODE` +
+e.g. `start n/country-capitals c/15 m/LEARN`
+* *List all lessons*: `listLessons`
+* *Add a lesson*: `addLesson n/NAME c/CORE…​ [o/OPTIONAL]…​` +
+e.g. `addLesson n/MedicineTrivia c/Proposition c/TrueOrFalse`
+* *List all cards*: `list cards`
+* *Add a card*: `add card q/QUESTION a/ANSWER [h/HINT]` +
+e.g. `add card q/What state is Seattle in? a/Washington h/The state is named after the founding father of USA`
+* *Edit a card*: `edit card INDEX [q/QUESTION] [a/ANSWER] [h/HINT]` +
+e.g. `card edit 12 q/How many intercostal spaces are there? h/`
+* *Delete a card*: `delete card INDEX` +
+e.g. `delete card 2`
+=======
 * *Viewing help*: `help`
 * *Starting quiz session*: `start n/NAME [c/COUNT] m/MODE` +
 e.g. `start n/02-03-LEARN c/15 m/LEARN`
@@ -349,6 +371,7 @@ e.g. `openLesson 1`
 e.g. `addCard c/Australia c/Canberra c/English o/Starts with C`
 * *Deleting a flashcard*: `deleteCard INDEX` +
 e.g. `deleteCard 2`
+>>>>>>> bf41a0f8bff90a3739d9ac4a4455f9c09eef715f
 * *Import user profile*: `import user`
 * *Export user profile*: `export user`
 * *View history*: `history`

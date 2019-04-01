@@ -97,7 +97,8 @@ public class ManagementModelManagerTest {
          *
          * TODO
          */
-        CardSrsData testCardSrsData = new CardSrsData(1, 1, 1, Instant.now());
+        CardSrsData testCardSrsData = new CardSrsData(1, 1, 1,
+                Instant.now(), false);
 
         User testUser = modelManager.getUser();
         assertEquals(new User(), testUser);

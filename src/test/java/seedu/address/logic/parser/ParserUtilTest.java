@@ -39,8 +39,8 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parserUtil() {
-        final String name = "01-01-learn";
+    public void parserUtil() throws ParseException {
+        final String name = "single";
         final String count = "1";
         final String mode = "learn";
         ParserUtil parserUtil = new ParserUtil();

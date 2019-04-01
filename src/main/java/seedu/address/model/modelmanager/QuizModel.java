@@ -35,6 +35,15 @@ public interface QuizModel extends Model {
     List<SrsCard> getQuizSrsCards();
 
     /**
+     * Return questionHeader of the given lesson.
+     */
+    String getQuestionHeader();
+
+    /**
+     * Return answerHeader of the given lesson.
+     */
+    String getAnswerHeader();
+    /**
      * Sets the {@code Quiz} and {@code Session} information.
      */
     void init(Quiz quiz, Session session);

@@ -27,6 +27,7 @@ public class ParserUtil {
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
     /**
+     *
      * Parses a {@code String name} into a {@code String name}.
      * Leading and trailing whitespaces will be trimmed.
      */
@@ -38,20 +39,32 @@ public class ParserUtil {
     /**
      * Parses a {@code String count} into a {@code int count}.
      * Leading and trailing whitespaces will be trimmed.
+     * @throws ParseException if the count is not a number.
      */
-    public static int parseCount(String count) {
+    public static int parseCount(String count) throws ParseException {
         requireNonNull(count);
         String trimmedCount = count.trim();
-        return Integer.parseInt(trimmedCount);
+        boolean numeric = trimmedCount.matches("\\d+");
+        if (numeric) {
+            return Integer.parseInt(trimmedCount);
+        } else {
+            throw new ParseException("Count of number should an integer.");
+        }
     }
-
     /**
      * Parses a {@code String mode} into an {@code Quiz.mode mode}.
      * Leading and trailing whitespaces will be trimmed.
+     * @throws ParseException if the mode name is not in the enum.
      */
-    public static QuizMode parseMode(String mode) {
+    public static QuizMode parseMode(String mode) throws ParseException {
         requireNonNull(mode);
         String trimmedMode = mode.trim().toUpperCase();
-        return QuizMode.valueOf(trimmedMode);
+        if (trimmedMode.equals("LEARN") || trimmedMode.equals("PREVIEW")
+                || trimmedMode.equals("REVIEW") || trimmedMode.equals("DIFFICULT")) {
+            return QuizMode.valueOf(trimmedMode);
+        } else {
+            throw new ParseException("Mode of quiz is not acceptable. You can choose from: "
+                    + "learn, preview, review and difficult");
+        }
     }
 }

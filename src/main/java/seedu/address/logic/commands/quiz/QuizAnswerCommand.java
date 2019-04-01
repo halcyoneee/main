@@ -36,13 +36,12 @@ public class QuizAnswerCommand extends QuizCommand {
 
         QuizCard card = quizModel.getCurrentQuizCard();
         StringBuilder sb = new StringBuilder();
-        String questionHeader = "question"; //quizModel.getQuizSrsCards().get(0).getLesson().getCoreHeaders().get(0);
-        String answerHeader = "answer"; //quizModel.getQuizSrsCards().get(0).getLesson().getCoreHeaders().get(1);
-        if (card.getQuizMode() == QuizMode.PREVIEW) {
-            // don't need to update totalAttempts and streak
+        String questionHeader = quizModel.getQuestionHeader();
+        String answerHeader = quizModel.getAnswerHeader();
+        if (card.getQuizMode() == QuizMode.PREVIEW || card.getQuizMode() == QuizMode.DIFFICULT) {
             if (quizModel.hasCardLeft()) {
                 card = quizModel.getNextCard();
-                if (card.getQuizMode() == QuizMode.PREVIEW) {
+                if (card.getQuizMode() == QuizMode.PREVIEW || card.getQuizMode() == QuizMode.DIFFICULT) {
                     quizModel.setDisplayFormatter(new QuizUiDisplayFormatter(questionHeader, card.getQuestion(),
                             answerHeader, card.getAnswer(), QuizMode.PREVIEW));
                     return new CommandResult("", true, false, false);

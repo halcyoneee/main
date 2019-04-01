@@ -15,7 +15,7 @@ import seedu.address.model.user.CardSrsData;
  */
 public class SrsCardBuilder {
     public static final CardSrsData DEFAULT_CARDSRSDATA = new CardSrsData(CARD_BELGIUM.hashCode(),
-            1, 1, Instant.ofEpochMilli(123));
+            1, 1, Instant.ofEpochMilli(123), false);
     private Card card;
     private CardSrsData cardData;
     private Lesson lesson;

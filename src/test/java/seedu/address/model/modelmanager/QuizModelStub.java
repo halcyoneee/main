@@ -37,6 +37,20 @@ public class QuizModelStub implements QuizModel {
     /**
      * This method should not be called.
      */
+    public String getQuestionHeader() {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    /**
+     * This method should not be called.
+     */
+    public String getAnswerHeader() {
+        throw new AssertionError("This method should not be called.");
+    }
+
+    /**
+     * This method should not be called.
+     */
     public String getName() {
         throw new AssertionError("This method should not be called.");
     }

@@ -107,7 +107,7 @@ public class StorageManagerTest {
         storageManager.setUserFilePath(testFile);
         assertEquals(original, storageManager.readUser().orElse(new User()));
         assertEquals(original, storageManager.readUser(testFile).orElse(new User()));
-        original.addCard(new CardSrsData(1, 1, 1, Instant.now()));
+        original.addCard(new CardSrsData(1, 1, 1, Instant.now(), false));
         storageManager.saveUser(original);
         assertEquals(1 , storageManager.readUser().get().getCards().size());
         storageManager.saveUser(original, testFile);

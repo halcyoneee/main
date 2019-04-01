@@ -18,9 +18,10 @@ import seedu.address.model.session.Session;
  */
 public class StartCommandParser implements Parser {
     /**
-  * Parses the given {@code String} of arguments in the context of the StartCommand
-  * and returns an StartCommand object for execution.
- */
+     * Parses the given {@code String} of arguments in the context of the StartCommand
+     * and returns an StartCommand object for execution.
+     */
+    @Override
     public QuizStartCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
             ArgumentTokenizer.tokenize(args, PREFIX_START_NAME, PREFIX_START_COUNT, PREFIX_START_MODE);

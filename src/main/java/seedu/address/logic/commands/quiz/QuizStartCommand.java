@@ -14,6 +14,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 
 import seedu.address.logic.commands.management.ManagementCommand;
 import seedu.address.model.lesson.Lesson;
+import seedu.address.model.lesson.LessonList;
 import seedu.address.model.modelmanager.ManagementModel;
 import seedu.address.model.modelmanager.Model;
 
@@ -25,10 +26,11 @@ import seedu.address.model.quiz.QuizMode;
 import seedu.address.model.quiz.QuizUiDisplayFormatter;
 import seedu.address.model.session.Session;
 import seedu.address.model.session.SrsCardsManager;
+import seedu.address.model.srscard.SrsCard;
 import seedu.address.model.user.CardSrsData;
 
 /**
- * TODO: implement the actual start command
+ * Execute user input to start a session.
  */
 public class QuizStartCommand extends ManagementCommand {
     public static final String COMMAND_WORD = "start";
@@ -38,7 +40,7 @@ public class QuizStartCommand extends ManagementCommand {
             + "[" + PREFIX_START_COUNT + "COUNT] "
             + PREFIX_START_MODE + "MODE...\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_START_NAME + "02-03-LEARN "
+            + PREFIX_START_NAME + "country-capitals "
             + PREFIX_START_COUNT + "15 "
             + PREFIX_START_MODE + "LEARN";
     public static final String MESSAGE_SUCCESS = "Starting new quiz";
@@ -59,26 +61,16 @@ public class QuizStartCommand extends ManagementCommand {
     public CommandResult executeActual(QuizModel model, CommandHistory history) {
         List<QuizCard> quizCards = session.generateSession();
         Quiz quiz = new Quiz(quizCards, session.getMode());
-
         model.init(quiz, session);
         QuizCard card = model.getNextCard();
-
-        // TODO save the coreheader info in quizcards
         if (card.getQuizMode() == QuizMode.PREVIEW) {
             model.setDisplayFormatter(new QuizUiDisplayFormatter(
-                    // model.getQuizSrsCards().getQuizSrsCards(0).getLesson().getCoreHeaders().get(0),
-                    "Question", card.getQuestion(),
-                    // model.getQuizSrsCards().get(0).getLesson().getCoreHeaders().get(1),
-                    "Answer",
-                    card.getAnswer(), QuizMode.PREVIEW));
+                    model.getQuestionHeader(), card.getQuestion(),
+                    model.getAnswerHeader(), card.getAnswer(), QuizMode.PREVIEW));
         } else {
             model.setDisplayFormatter(new QuizUiDisplayFormatter(
-                    // model.getQuizSrsCards().get(0).getLesson().getCoreHeaders().get(0),
-                    "Question",
-                    card.getQuestion(),
-                    // model.getQuizSrsCards().get(0).getLesson().getCoreHeaders().get(1),
-                    "Answer",
-                    QuizMode.REVIEW));
+                    model.getQuestionHeader(), card.getQuestion(),
+                    model.getAnswerHeader(), QuizMode.REVIEW));
         }
 
         return new CommandResult("", true, false, false);
@@ -101,19 +93,20 @@ public class QuizStartCommand extends ManagementCommand {
             throw new CommandException(MESSAGE_EXPECTED_MODEL);
         }
         ManagementModel mgtModel = (ManagementModel) model;
+        LessonList lessonList = mgtModel.getLessonList();
+        List<Lesson> lessons = lessonList.getLessons();
+        boolean lessonExist = false;
         Lesson lesson = mgtModel.getLesson(0);
-
-        //TODO: implement these hard code after updates
-        //Card card1 = new Card(List.of("Japan", "Tokyo"), List.of("T"));
-        //Card card2 = new Card(List.of("Belgium", "Brussels"), List.of("B"));
-        //Lesson lesson = new Lesson("Capitals", List.of("Country", "Capitals"), List.of("Hint"),
-        //        0, 1, List.of(card1, card2));
-        //Instant current = Instant.now();
-        //CardSrsData cardData1 = new CardSrsData(card1.hashCode(), 1, 1, current);
-        //CardSrsData cardData2 = new CardSrsData(card2.hashCode(), 1, 1,
-        //        current.plus(Duration.ofHours(1)));
-        //cardData.put(card1.hashCode(), cardData1);
-        //cardData.put(card2.hashCode(), cardData2);
+        for (int i = 0; i < lessons.size(); i++) {
+            if (lessons.get(i).getName().equals(this.session.getName())) {
+                lesson = mgtModel.getLesson(i);
+                lessonExist = true;
+                break;
+            }
+        }
+        if (!lessonExist) {
+            throw new CommandException("Lesson is not found. Please try another one.");
+        }
         HashMap<Integer, CardSrsData> cardData = new HashMap<>();
         for (int i = 0; i < lesson.getCardCount(); i++) {
             int currentHashcode = lesson.getCards().get(i).hashCode();
@@ -122,10 +115,37 @@ public class QuizStartCommand extends ManagementCommand {
             }
         }
         SrsCardsManager generateManager = new SrsCardsManager(lesson, cardData);
-        this.session = new Session(this.session.getName(), this.session.getCount(), this.session.getMode(),
-                generateManager.sort());
-        if (session.getCount() >= session.getSrsCards().size()) {
-            session.setCount(session.getSrsCards().size() - 1);
+        if (this.session.getMode() == QuizMode.PREVIEW) {
+            this.session = new Session(this.session.getName(), this.session.getCount(), this.session.getMode(),
+                    generateManager.preview());
+        } else if (this.session.getMode() == QuizMode.DIFFICULT) {
+            List<SrsCard> srsCards = generateManager.previewDifficult();
+            if (srsCards.size() == 0) {
+                throw new CommandException("There is no difficult card in this lesson");
+            } else {
+                this.session = new Session(this.session.getName(), this.session.getCount(), this.session.getMode(),
+                        srsCards);
+            }
+        } else if (this.session.getMode() == QuizMode.REVIEW) {
+            List<SrsCard> srsCards = generateManager.sort();
+            if (srsCards.size() == 0) {
+                throw new CommandException("There is no card for review since all cards in current lesson"
+                        + "do not reach the due date.");
+            } else {
+                this.session = new Session(this.session.getName(), this.session.getCount(), this.session.getMode(),
+                        srsCards);
+            }
+        } else if (this.session.getMode() == QuizMode.LEARN) {
+            List<SrsCard> srsCards = generateManager.learn();
+            if (srsCards.size() == 0) {
+                throw new CommandException("There is no more new card to learn in this lesson");
+            } else {
+                this.session = new Session(this.session.getName(), this.session.getCount(), this.session.getMode(),
+                        srsCards);
+            }
+        }
+        if (session.getCount() > session.getSrsCards().size()) {
+            session.setCount(session.getSrsCards().size());
             return new CommandResult("Not enough cards in current lesson. Set the count to the maximum"
                     + "number for you by default.");
         } else {

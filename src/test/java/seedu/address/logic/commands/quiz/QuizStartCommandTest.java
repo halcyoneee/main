@@ -48,10 +48,10 @@ public class QuizStartCommandTest {
     @Test
     public void executeActual_learn_success() {
         Lesson lesson = new LessonBuilder().build();
-        final Session session = new SessionBuilder(new Session("01-01-Learn", 2,
+        final Session session = new SessionBuilder(new Session("Capitals", 2,
                 QuizMode.LEARN, List.of(new SrsCardBuilder().build(),
                 new SrsCardBuilder(new SrsCard(CARD_JAPAN, new CardSrsData(CARD_JAPAN.hashCode(), 1,
-                        1, Instant.now().plus(Duration.ofHours(2))), lesson)).build()))).build();
+                        1, Instant.now().plus(Duration.ofHours(2)), false), lesson)).build()))).build();
         final QuizCard card1 = new QuizCard("Belgium", "Brussels");
         final QuizCard card2 = new QuizCard("Japan", "Tokyo");
         final List<QuizCard> quizCards = new ArrayList<>(Arrays.asList(card1, card2));
@@ -77,10 +77,10 @@ public class QuizStartCommandTest {
     @Test
     public void executeActual_review_success() {
         Lesson lesson = new LessonBuilder().build();
-        final Session session = new SessionBuilder(new Session("01-01-Learn", 2,
+        final Session session = new SessionBuilder(new Session("Capitals", 2,
             QuizMode.REVIEW, List.of(new SrsCardBuilder().build(),
             new SrsCardBuilder(new SrsCard(CARD_JAPAN, new CardSrsData(CARD_JAPAN.hashCode(), 1,
-                1, Instant.now().plus(Duration.ofHours(2))), lesson)).build()))).build();
+                1, Instant.now().plus(Duration.ofHours(2)), false), lesson)).build()))).build();
         final QuizCard card1 = new QuizCard("Belgium", "Brussels");
         final QuizCard card2 = new QuizCard("Japan", "Tokyo");
         final List<QuizCard> quizCards = new ArrayList<>(Arrays.asList(card1, card2));

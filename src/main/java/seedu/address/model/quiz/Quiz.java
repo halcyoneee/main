@@ -66,6 +66,9 @@ public class Quiz {
         default:
             break;
         }
+        if (mode.equals(QuizMode.DIFFICULT)) {
+            generatePreview();
+        }
 
         generatedCardSize = generatedSession.size();
         return generatedSession;

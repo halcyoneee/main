@@ -29,7 +29,8 @@ public class Session {
         if (cardCount < CARD_COUNT_MINIMUM) {
             throw new IllegalArgumentException("CardCount should not zero");
         }
-        if ((mode != QuizMode.LEARN) & (mode != QuizMode.REVIEW) & (mode != QuizMode.PREVIEW)) {
+        if ((mode != QuizMode.LEARN) & (mode != QuizMode.REVIEW) & (mode != QuizMode.PREVIEW)
+            & (mode != QuizMode.DIFFICULT)) {
             throw new IllegalArgumentException("Invalid mode");
         }
         this.name = name;
@@ -44,7 +45,8 @@ public class Session {
         if (cardCount < CARD_COUNT_MINIMUM) {
             throw new IllegalArgumentException("CardCount should not be less than five in a single session");
         }
-        if ((mode != QuizMode.LEARN) & (mode != QuizMode.REVIEW) & (mode != QuizMode.PREVIEW)) {
+        if ((mode != QuizMode.LEARN) & (mode != QuizMode.REVIEW) & (mode != QuizMode.PREVIEW)
+            & (mode != QuizMode.DIFFICULT)) {
             throw new IllegalArgumentException("Invalid mode");
         }
 
@@ -58,7 +60,8 @@ public class Session {
         if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("Invalid name");
         }
-        if ((mode != QuizMode.LEARN) & (mode != QuizMode.REVIEW) & (mode != QuizMode.PREVIEW)) {
+        if ((mode != QuizMode.LEARN) & (mode != QuizMode.REVIEW) & (mode != QuizMode.PREVIEW)
+            & (mode != QuizMode.DIFFICULT)) {
             throw new IllegalArgumentException("Invalid mode");
         }
 
@@ -77,7 +80,8 @@ public class Session {
 
         for (int i = 0; i < cardCount; i++) {
             currentCard = srsCards.get(i);
-            quizCards.add(new QuizCard(currentCard.getQuestion(), currentCard.getAnswer()));
+            quizCards.add(new QuizCard(currentCard.getQuestion(), currentCard.getAnswer(),
+                    currentCard.getHints(), currentCard.getQuestionHeader(), currentCard.getAnswerHeader()));
         }
         return quizCards;
     }
@@ -106,6 +110,14 @@ public class Session {
             quizSrsCards.add(srsCards.get(i));
         }
         return quizSrsCards;
+    }
+    public String getQuestionHeader() {
+        SrsCard srsCard = srsCards.get(0);
+        return srsCard.getQuestionHeader();
+    }
+    public String getAnswerHeader() {
+        SrsCard srsCard = srsCards.get(0);
+        return srsCard.getAnswerHeader();
     }
 
     /**

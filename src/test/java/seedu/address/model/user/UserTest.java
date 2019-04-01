@@ -12,8 +12,9 @@ import org.junit.Test;
 public class UserTest {
     private User user = new User();
     private Instant date = Instant.now();
-    private final CardSrsData testCardData = new CardSrsData(1, 1, 1, date);
-    private final CardSrsData testCardData2 = new CardSrsData(20, 20, 20, date);
+    private final CardSrsData testCardData = new CardSrsData(1, 1, 1, date, false);
+    private final CardSrsData testCardData2 = new CardSrsData(20, 20, 20, date,
+            false);
 
     @Test
     public void addCardTest() {
